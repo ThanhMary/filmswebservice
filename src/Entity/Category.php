@@ -33,11 +33,11 @@ class Category
     /**
      * @ORM\OneToMany(targetEntity=Film::class, mappedBy="category")
      */
-    private $products;
+    private $films;
 
     public function __construct()
     {
-        $this->products = new ArrayCollection();
+        $this->films = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -60,27 +60,27 @@ class Category
     /**
      * @return Collection<int, Film>
      */
-    public function getProducts(): Collection
+    public function getFilms(): Collection
     {
-        return $this->products;
+        return $this->films;
     }
 
-    public function addProduct(Film $product): self
+    public function addFilm(Film $film): self
     {
-        if (!$this->products->contains($product)) {
-            $this->products[] = $product;
-            $product->setCategory($this);
+        if (!$this->films->contains($film)) {
+            $this->films[] = $film;
+            $film->setCategory($this);
         }
 
         return $this;
     }
 
-    public function removeProduct(Film $product): self
+    public function removeProduct(Film $film): self
     {
-        if ($this->products->removeElement($product)) {
+        if ($this->films->removeElement($film)) {
             // set the owning side to null (unless already changed)
-            if ($product->getCategory() === $this) {
-                $product->setCategory(null);
+            if ($film->getCategory() === $this) {
+                $film->setCategory(null);
             }
         }
 
