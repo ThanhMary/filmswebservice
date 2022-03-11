@@ -75,7 +75,7 @@ class Category
         return $this;
     }
 
-    public function removeProduct(Film $film): self
+    public function removeFilm(Film $film): self
     {
         if ($this->films->removeElement($film)) {
             // set the owning side to null (unless already changed)
