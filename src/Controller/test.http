@@ -1,0 +1,2 @@
+# GET http://localhost:8000/api/films?page=1
+#    accept: application/ld+json

@@ -48,19 +48,24 @@ class FilmRepository extends ServiceEntityRepository
     // /**
     //  * @return Film[] Returns an array of Film objects
     //  */
-    /*
-    public function findByExampleField($value)
+    
+   /**
+     * @return filmsbyCategory[]
+     */
+    public function findByCategory($idCat)
     {
-        return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('f.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
+        $qb = $this->createQueryBuilder('b');
+
+        $filmsbyCategory = $qb
+                    ->join('b.category', 'c')
+                    ->andWhere('c.id = :category_id')
+                    ->setParameter('category_id', $idCat)
+                    ->getQuery()
+                    ->getResult()
         ;
+
+        return $filmsbyCategory;
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Film
