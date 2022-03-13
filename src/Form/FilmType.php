@@ -4,7 +4,9 @@ namespace App\Form;
 
 use App\Entity\Film;
 use Symfony\Component\Form\AbstractType;
+
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FilmType extends AbstractType
@@ -17,6 +19,22 @@ class FilmType extends AbstractType
             ->add('released')
             ->add('note')
             ->add('category')
+            ->add('Image', FileType::class,[
+                'label' => false,
+                'mapped' => false,
+                'required' => false,
+                'contraints'=>[
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/x-png,'
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid image en jpg ou en png',
+                    ])
+                ]
+              
+            ])
         ;
     }
 
