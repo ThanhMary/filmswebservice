@@ -86,7 +86,7 @@ class ApiFilmController extends AbstractController
     {
         $JsonRecu = $request->getContent();
         try{
-            $film = $serializer->deserialize($JsonRecu, Post:: class, 'json');
+            $film = $serializer->deserialize($JsonRecu, Film:: class, 'json');
             $film->setReleased(new \DateTime());
             $errors = $validator->validate($film);
             if(count($errors)>0){
@@ -113,7 +113,7 @@ class ApiFilmController extends AbstractController
     public function Edit(Request $request,Film $film, FilmRepository $filmRepository, EntityManagerInterface $manager, SerializerInterface $serializer, ValidatorInterface $validator )   {
    
         try{
-            $movie = $serializer->deserialize($film, Post:: class, 'json');
+            $movie = $serializer->deserialize($film, Film:: class, 'json');
             $movie->setReleased(new \DateTime());
             $errors = $validator->validate($movie);
             if(count($errors)>0){
