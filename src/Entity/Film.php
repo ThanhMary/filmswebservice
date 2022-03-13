@@ -58,6 +58,11 @@ class Film
      */
     private $category;
 
+    /**
+     * @ORM\Column(type="blob", nullable=true)
+     */
+    private $Image;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -119,6 +124,18 @@ class Film
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getImage()
+    {
+        return $this->Image;
+    }
+
+    public function setImage($Image): self
+    {
+        $this->Image = $Image;
 
         return $this;
     }

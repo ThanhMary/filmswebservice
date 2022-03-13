@@ -3,10 +3,13 @@
 namespace App\Repository;
 
 use App\Entity\Film;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\OptimisticLockException;
+use App\Entity\Search;
+use Doctrine\DBAL\Query;
 use Doctrine\ORM\ORMException;
+use Doctrine\DBAL\Query\QueryBuilder;
+use Doctrine\ORM\OptimisticLockException;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method Film|null find($id, $lockMode = null, $lockVersion = null)
@@ -45,9 +48,7 @@ class FilmRepository extends ServiceEntityRepository
         }
     }
 
-    // /**
-    //  * @return Film[] Returns an array of Film objects
-    //  */
+
     
    /**
      * @return filmsbyCategory[]
@@ -67,15 +68,25 @@ class FilmRepository extends ServiceEntityRepository
         return $filmsbyCategory;
     }
 
-    /*
-    public function findOneBySomeField($value): ?Film
+     
+   /**
+     * @return filmsbySearhWord[]
+     */
+    public function filter(Search $searchWord)
     {
-        return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+       return $this->createQueryBuilder('b');
     }
-    */
+
+ 
+    
+    // public function findOneBySomeField($value): ?Film
+    // {
+    //     return $this->createQueryBuilder('f')
+    //         ->andWhere('f.exampleField = :val')
+    //         ->setParameter('val', $value)
+    //         ->getQuery()
+    //         ->getOneOrNullResult()
+    //     ;
+    // }
+    
 }

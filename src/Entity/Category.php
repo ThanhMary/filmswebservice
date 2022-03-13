@@ -11,10 +11,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * 
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
+<<<<<<< HEAD
  * @ApiResource(
  *      collectionOperations={"get", "post"},
  *      itemOperations={"get", "put", "patch", "delete"}
  * )
+=======
+ * @ApiResource()
+ * 
+>>>>>>> 9cc96a246a47c5fd18aa5012fc69fa81d69836c2
  */
 class Category
 {
