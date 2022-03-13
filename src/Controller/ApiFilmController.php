@@ -80,7 +80,7 @@ class ApiFilmController extends AbstractController
     }
 
     /**
-     * @Route("/api/movie/new", name="api_film_create", methods={"POST"})
+     * @Route("/api/movieNew/", name="api_film_create", methods={"POST"})
      */
     public function Create(Request $request, EntityManagerInterface $manager, SerializerInterface $serializer, ValidatorInterface $validator )   
     {

@@ -10,11 +10,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * 
- * @ORM\Entity(repositoryClass=FilmRepository::class)
- * @ApiResource(
- *      collectionOperations={"get", "post"},
- *      itemOperations={"get", "put", "patch", "delete"}
- * )
+ * @ORM\Entity(repositoryClass=CategoryRepository::class)
+ * @ApiResource()
+ * 
  */
 class Category
 {
