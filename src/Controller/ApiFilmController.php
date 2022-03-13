@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-
+use App\Entity\Film;
 use App\Repository\FilmRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,7 +45,7 @@ class ApiFilmController extends AbstractController
 
     
      /**
-     * @Route("/api/movies/{id}", name="api_film_one", methods={"GET"})
+     * @Route("/api/movie/{id}", name="api_film_one", methods={"GET"})
      */
     public function getOne(FilmRepository $filmReposistory, int $id, Request $request): Response
     {
@@ -61,10 +61,10 @@ class ApiFilmController extends AbstractController
      */
     public function Create(Request $request, EntityManagerInterface $manager, SerializerInterface $serializer, ValidatorInterface $validator )   
     {
-        $JsonRecu = $request->getContent();
+        $JsonRecu = ($request->getContent());
         try{
-            $film = $serializer->deserialize($JsonRecu, Post:: class, 'json');
-            $film->setReleased(new \DateTime());
+            $film = $serializer->deserialize($JsonRecu, Film::class, 'json');
+            //$film->setReleased(new \DateTime());
             $errors = $validator->validate($film);
             if(count($errors)>0){
                 return $this->json($errors,Response:: HTTP_NOT_ACCEPTABLE);
@@ -84,6 +84,7 @@ class ApiFilmController extends AbstractController
         }
         
     }
+
     /**
      * @Route("/api/movies/{id}", name="api_film_edit", methods={"POST", "GET"})
      */
