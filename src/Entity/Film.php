@@ -6,24 +6,27 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\FilmRepository;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * 
  * @ORM\Entity(repositoryClass=FilmRepository::class)
  * @ApiResource(
  *      collectionOperations={"get", "post"},
- *      itemOperations={"get", "put", "patch", "delete"}
+ *      itemOperations={"get", "put", "delete"},
  * )
- * @ApiFilter(SearchFilter::class, properties={"name": "word_start", "description": "word_start", "note": "exact"})
+ * @ApiFilter(SearchFilter::class, properties={"name": "word_start", "description": "word_start"})
  * 
  */
 class Film
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
      * 
      */
     private $id;
@@ -53,8 +56,10 @@ class Film
     private $note;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="films")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="films")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+     * @ApiSubresource
+     * 
      */
     private $category;
 

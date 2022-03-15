@@ -59,7 +59,7 @@ class FilmRepository extends ServiceEntityRepository
 
         $filmsbyCategory = $qb
                     ->join('b.category', 'c')
-                    ->andWhere('c.id = :category_id')
+                    ->andWhere(':category_id = c.id')
                     ->setParameter('category_id', $idCat)
                     ->getQuery()
                     ->getResult()
@@ -68,16 +68,19 @@ class FilmRepository extends ServiceEntityRepository
         return $filmsbyCategory;
     }
 
-     
-   /**
-     * @return filmsbySearhWord[]
-     */
-    public function filter(Search $searchWord)
+    public function findByName($name)
     {
-       return $this->createQueryBuilder('b');
-    }
+        $qb = $this->createQueryBuilder('f');
 
- 
+        $filmsbyCategory = $qb
+                    ->where(':name = f.name')
+                    ->setParameter(':name', $name)
+                    ->getQuery()
+                    ->getResult()
+        ;
+
+        return $filmsbyCategory;
+    }
     
     // public function findOneBySomeField($value): ?Film
     // {

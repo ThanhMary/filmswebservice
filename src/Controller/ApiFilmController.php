@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\BrowserKit\Response as BrowserKitResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class ApiFilmController extends AbstractController
 {
@@ -25,8 +26,22 @@ class ApiFilmController extends AbstractController
      * 
      * Permet de récupérer toutes les films
      */
-    public function index(FilmRepository $filmReposistory, CategoryRepository $categoryRepository,PaginatorInterface $paginator,Request $request): Response
+    public function index(FilmRepository $filmReposistory, CategoryRepository $categoryRepository, PaginatorInterface $paginator, Request $request): Response
     {
+
+        if ($request->query->get('name')) {
+            
+            $nameFilm = $filmReposistory->findByName($request->query->get('name'));
+            $responseType = $this->getType($request->headers->get('Accept', 'application/json'));
+
+            return $this->json($nameFilm, Response:: HTTP_OK, [
+
+                'Content-Type' => ('json' === $responseType ? 'application/json' : 'application/xml')
+    
+            ]);
+
+        }
+
         /** On récupère tout les films ainsi que les catégories */
         $categories = $categoryRepository->findAll();
         $films = $filmReposistory->findAll();
@@ -48,14 +63,15 @@ class ApiFilmController extends AbstractController
     }
 
      /**
-     * @Route("/api/movies/{id}", name="api_one_film", methods={"GET"})
-     * Permet de récupérer un film
+     * @Route("/api/movies/{id}/cat/", name="api_film_byCat", methods={"GET"})
+     * 
+     * Permet de récupérer un film par catégories
      */
     public function getFilmsByCategory(FilmRepository $filmReposistory, int $id, Request $request): Response
     {
-         
-       $filmsByCat = $filmReposistory->find($id);
-
+       $films = $filmReposistory->find($id);
+       $filmsByCat = $filmReposistory->findByCategory($films->getCategory()->getId());
+       
        if (empty($filmsByCat)) {
 
             $responseType = $this->getType($request->headers->get('Accept', 'application/json'));
@@ -86,11 +102,12 @@ class ApiFilmController extends AbstractController
 
     
      /**
-     * @Route("/api/movie/{id}", name="api_film_one", methods={"GET"})
+     * @Route("/api/movies/{id}", name="api_film_one", methods={"GET"})
      */
-    public function getOne(FilmRepository $filmReposistory, Request $request, Film $film): Response
+    public function getOne(FilmRepository $filmReposistory, Request $request, int $id): Response
     {
-       
+       $film = $filmReposistory->find($id);
+
         $responseType = $this->getType($request->headers->get('Accept', 'application/json'));
 
         return $this->json($film, Response:: HTTP_OK, [
