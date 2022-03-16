@@ -123,10 +123,10 @@ class ApiFilmController extends AbstractController
     public function Create(Request $request, EntityManagerInterface $manager, SerializerInterface $serializer, ValidatorInterface $validator )   
     {
         $JsonRecu = ($request->getContent());
-        $uploadImg = $request->files->get('Image');
-        if(!$uploadImg){
-            dd("Please up file!");
-        }
+        // $uploadImg = $request->files->get('Image');
+        // if(!$uploadImg){
+        //     dd("Please up file!");
+        // }
 
         try {
 
@@ -138,7 +138,7 @@ class ApiFilmController extends AbstractController
                 return $this->json($errors,Response:: HTTP_NOT_ACCEPTABLE);
 
             }
-            $film->Image =  $uploadImg;
+          //  $film->Image =  $uploadImg;
             $manager->persist($film);
             $manager->flush();
 
@@ -265,20 +265,6 @@ class ApiFilmController extends AbstractController
 
         }
 
-    }
-
-    public function uploadImage(Film $film, Request $request){
-        $uploadImg = $request->files->get('image');
-        if(!$uploadImg){
-            dd("Please up file!");
-        }
-        $film->name = $request->request->get('name');
-        $film->description = $request->request->get('description');
-        $film->note = $request->request->get('note');
-        $film->released = $request->request->get('released');
-        $film->Image =  $uploadImg;
-
-        return $film;
     }
 
     private function getType(string $mime){

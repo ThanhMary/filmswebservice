@@ -2,20 +2,41 @@
 
 namespace App\Controller;
 
-use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use App\Entity\Film;
 use App\Form\FilmType;
+use App\Service\FileUploader;
 use App\Repository\FilmRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use ApiPlatform\Core\DataProvider\PaginatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * @Route("/film")
  */
 class FilmController extends AbstractController
 {
+
+    public function __invoke(Request $request, FileUploader $fileUploader): Film
+    {
+        $uploadedFile = $request->files->get('file');
+        if (!$uploadedFile) {
+            throw new BadRequestHttpException('"file" is required');
+        }
+ 
+        // create a new entity and set its values
+        $film = new Film();
+        $film->name = $request->get('name');
+        $film->description = $request->get('description');
+        $film->note = $request->get('note');
+        $film->released = $request->get('released');
+        // upload the file and save its filename
+        $film->cover = $fileUploader->upload($uploadedFile);
+ 
+        return $film;
+    }
     /**
      * @Route("/", name="app_film_index", methods={"GET"})
      */
@@ -35,13 +56,27 @@ class FilmController extends AbstractController
     /**
      * @Route("/new", name="app_film_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, FilmRepository $filmRepository): Response
+    public function new(Request $request, FilmRepository $filmRepository, FileUploader $fileUploader): Response
     {
         $film = new Film();
         $form = $this->createForm(FilmType::class, $film);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        $uploadedFile = $request->files->get('file');
+        if (!$uploadedFile) {
+            throw new BadRequestHttpException('"file" is required');
+        }
+ 
+        // create a new entity and set its values
+        // upload the file and save its filename
+        $film = new Film();
+        $film->name = $request->get('name');
+        $film->description = $request->get('description');
+        $film->note = $request->get('note');
+        $film->released = $request->get('released');
+        $film->cover = $fileUploader->upload($uploadedFile);
+ 
+         if ($form->isSubmitted() && $form->isValid()) {
             $filmRepository->add($film);
             return $this->redirectToRoute('app_film_index', [], Response::HTTP_SEE_OTHER);
         }
