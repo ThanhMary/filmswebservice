@@ -32,36 +32,36 @@ class Film
      * @ORM\Column(type="string", length=128)
      *
      */
-    private $name;
+    public $name;
 
     /**
      * @ORM\Column(type="string", length=2048)
      * 
      */
-    private $description;
+    public $description;
 
     /**
      * @ORM\Column(type="datetime")
      *
      */
-    private $released;
+    public $released;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      *
      */
-    private $note;
+    public $note;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="films")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $category;
+    public $category;
 
     /**
      * @ORM\Column(type="blob", nullable=true)
      */
-    private $Image;
+    public $Image;
 
     public function getId(): ?int
     {
